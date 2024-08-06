@@ -1,6 +1,6 @@
 {
   "name": "rpi5-stepper-motor-controller",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,8 +21,12 @@
     "async",
     "stepper-motor-controller",
     "rpi5",
+    "pi",
+    "pi5",
+    "raspberry",
     "blinds-controller",
     "hardware",
+    "node-gpiolib",
     "raspberrypi-gpio",
     "typescript",
     "npm-package"
@@ -35,6 +39,9 @@
     "@types/async": "^3.2.24",
     "typescript": "^5.5.4"
   },
+  "homepage": "https://github.com/ZipingL/rpi5-stepper-motor-controller",
+
+
   "files": [
     "dist",
     "src",

@@ -13,7 +13,9 @@ After upgrading to the Raspberry Pi 5, I discovered that existing stepper motor 
 ## Features
 
 - Compatible with Raspberry Pi 5
-- Supports any 4-pin stepper motor
+- Supports any stepper motor driven by a chip driver that provides 4 pins
+  - Such as the ULN2003 chip driver and its supported 28BYJ-48 stepper motor
+  - The default pins are [17, 18, 27, 22], but you can specify your own pins, as well as other customizable options for configuring the pins on the raspberry pi
 - Configurable step sequences
 - Adjustable step delay and direction
 - Promise-based API for easy integration with async/await
@@ -59,8 +61,6 @@ moveMotor();
 
 The `BlindsController` class demonstrates how to use the `StepperMotor` class for controlling window blinds. This encapsulation provides a modular and organized approach to managing motor operations for specific applications. This is especially useful given the nature of how the stepper motor is controlled (via literal turns) and the need to manage the motor's state, thus a dedicated controller class can help manage the motor's state and operations.
 - Here, the `BlindsController` class is responsible for controlling the blinds using a stepper motor and provides a method `toggleBlinds` to open or close the blinds.
-- Note that the `delete` method is called. This releases the GPIO pins and cleans up the resources used by the motor. If you do not release these pins and attempt to create another instance of the `StepperMotor` class using one or more of the same pins, you will receive a `Resource busy` error. *You can either take advantage of this by having your application exclusively control the motor (preventing other applications from using it) by not releasing the pins until the application exits, or you can release the pins each time the application finishes using the motor to allow other applications to use the pins.*
-
 ```typescript
 import { StepperMotor } from 'rpi5-stepper-motor-controller';
 
@@ -140,21 +140,16 @@ new StepperMotor(config: {
 
 #### Methods
 
-- `move(config: { stepCount?: number; direction?: boolean; stepSleep?: number; }): Promise<string>`
-- `cleanup(): void`
-- `delete(): Promise<void>`
+- `move(config: { stepCount?: number; direction?: boolean; stepSleep?: number; }): Promise<string>` - Moves the motor by the specified number of steps in the specified direction with the specified delay between steps.
+  - `stepCount`: The number of steps to move the motor (default: 2048)
+  - `direction`: The direction to move the motor (true: clockwise, false: counterclockwise) (default: true)
+  - `stepSleep`: The delay between steps in milliseconds (default: 2)
+  - Returns a Promise that resolves to a string indicating the completion of the motor movement.
+  - Will throw an error if the motor is already moving, or if the resource is busy, or for any other reason in which the gpio pins cannot be actively controlled.
+- `cleanup(): void` - Sets the values of all the pins to 0. This ensures that the pins are not left in an active state when the motor is not in use, which can cause the motor to heat up and potentially damage it. Note that with stepper motors, the motor moves only when the pins are undergoing changes in values. Therefore, if a pin remains on after movement is complete, the motor will not move but will still be powered, leading to potential overheating or unnecessary power consumption.
+- `delete(): Promise<void>` - Releases the GPIO pins and cleans up the resources used by the motor.
+  -  Note: If you do not release these pins and attempt to create another instance of the `StepperMotor` class using one or more of the same pins, you will receive a `Resource busy` error. *You can either take advantage of this by having your application exclusively control the motor (preventing other applications from using it) by not releasing the pins until the application exits, or you can release the pins each time the application finishes using the motor to allow other applications to use the pins.*
 
-### BlindsController
-
-#### Constructor
-
-```typescript
-new BlindsController(motor: StepperMotor)
-```
-
-#### Methods
-
-- `toggleBlinds(blindsState: boolean): Promise<void>`
 
 ## Contributing
 
