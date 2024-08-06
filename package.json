@@ -1,0 +1,45 @@
+{
+  "name": "rpi5-stepper-motor-controller",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Ziping Liu <ziping@linkedinliu.com>",
+  "license": "ISC",
+  "description": "A comprehensive TypeScript package for controlling stepper motors on the Raspberry Pi 5. This package provides a functional class for stepper motor control, compatible with any stepper motor that requires control of four GPIO pins. Ideal for hardware projects involving the Raspberry Pi 5.",
+  "keywords": [
+    "raspberrypi",
+    "raspberrypi5",
+    "stepper",
+    "stepper-motor",
+    "motor-controller",
+    "gpio",
+    "node-libgpiod",
+    "async",
+    "stepper-motor-controller",
+    "rpi5",
+    "blinds-controller",
+    "hardware",
+    "raspberrypi-gpio",
+    "typescript",
+    "npm-package"
+  ],
+  "dependencies": {
+    "async": "^3.2.5",
+    "node-libgpiod": "^0.4.6"
+  },
+  "devDependencies": {
+    "@types/async": "^3.2.24",
+    "typescript": "^5.5.4"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "package.json"
+  ],
+  "types": "dist/index.d.ts"
+}
